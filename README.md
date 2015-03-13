@@ -5,3 +5,5 @@
 - Swagger url is
 
 http://localhost:8080/swagger/index.html
+
+- I am using an in-memory H2 database
