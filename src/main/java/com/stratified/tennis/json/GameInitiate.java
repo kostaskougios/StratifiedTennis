@@ -1,6 +1,8 @@
 package com.stratified.tennis.json;
 
 /**
+ * Initializes a game between 2 players
+ *
  * @author kostas.kougios
  * Date: 13/03/15
  */
