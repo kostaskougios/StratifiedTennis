@@ -5,13 +5,13 @@ package com.stratified.tennis.json;
  * Date: 13/03/15
  */
 public class GameInitiateResponse {
-	private String gameId;
+	private int gameId;
 
-	public GameInitiateResponse(String gameId) {
+	public GameInitiateResponse(int gameId) {
 		this.gameId = gameId;
 	}
 
-	public String getGameId() {
+	public int getGameId() {
 		return gameId;
 	}
 }

@@ -3,18 +3,36 @@ package com.stratified.tennis.controller;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
+import com.stratified.tennis.json.ModelToJsonConverter;
+import com.stratified.tennis.model.Game;
+import com.stratified.tennis.service.GameService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TennisControllerUnitTest {
 
-	private TennisController tennisController = new TennisController();
+	@Mock
+	private GameService gameService;
+	@Mock
+	private ModelToJsonConverter modelToJsonConverter;
+	@InjectMocks
+	private TennisController tennisController;
 
 	@Test
 	public void initiatePositive() {
-		GameInitiateResponse response = tennisController.initiate(new GameInitiate("Kostas", "Nick"));
-		assertEquals("the-id", response.getGameId());
+		GameInitiate initiate = new GameInitiate("Kostas", "Nick");
+		Game game = Game.newGame("Kostas", "Nick");
+		when(modelToJsonConverter.toGame(initiate)).thenReturn(game);
+		when(gameService.initiate(game)).thenReturn(game.withId(5));
+		GameInitiateResponse response = tennisController.initiate(initiate);
+		assertEquals(5, response.getGameId());
 	}
 
 

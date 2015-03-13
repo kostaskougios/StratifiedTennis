@@ -7,7 +7,7 @@ package com.stratified.tennis.json;
  * Date: 13/03/15
  */
 public class GameInitiate {
-	private String player1,player2;
+	private String player1, player2;
 
 	public GameInitiate() {
 	}
