@@ -7,11 +7,11 @@ package com.stratified.tennis.json;
 public class GameInitiate {
 	private String player1,player2;
 
-	public void setPlayer1(String player1) {
-		this.player1 = player1;
+	public GameInitiate() {
 	}
 
-	public void setPlayer2(String player2) {
+	public GameInitiate(String player1, String player2) {
+		this.player1 = player1;
 		this.player2 = player2;
 	}
 
@@ -19,7 +19,15 @@ public class GameInitiate {
 		return player1;
 	}
 
+	public void setPlayer1(String player1) {
+		this.player1 = player1;
+	}
+
 	public String getPlayer2() {
 		return player2;
+	}
+
+	public void setPlayer2(String player2) {
+		this.player2 = player2;
 	}
 }
