@@ -52,6 +52,14 @@ public final class Game {
 		return stop == null ? Status.ONGOING : Status.COMPLETED;
 	}
 
+	public DateTime getStart() {
+		return start;
+	}
+
+	public DateTime getStop() {
+		return stop;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

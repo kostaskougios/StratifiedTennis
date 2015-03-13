@@ -1,6 +1,7 @@
 package com.stratified.tennis.service;
 
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.util.FailFast;
 import com.stratified.tennis.util.NYI;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameService {
 	public Game initiate(Game game) {
+		FailFast.notNull(game, "game");
 		return NYI.nyi();
 	}
 }
