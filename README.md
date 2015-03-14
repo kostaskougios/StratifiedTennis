@@ -11,3 +11,5 @@ http://localhost:8080/swagger/index.html
 - package-info.java contains a brief of some packages
 
 - I didn't apply any security for game id's. They are numbers which can be easily guessed. (A more secure solution would i.e. be those to be GUID's)
+
+- domain model classes are immutable and marked as @Immutable

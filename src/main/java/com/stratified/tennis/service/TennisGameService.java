@@ -1,7 +1,8 @@
 package com.stratified.tennis.service;
 
 import com.stratified.tennis.dao.GameDao;
-import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.Player;
+import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.util.FailFast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,16 +18,26 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Transactional
-public class GameService {
+public class TennisGameService {
 	@Autowired
 	private GameDao gameDao;
 
-	public Game initiate(Game game) {
-		FailFast.notNull(game, "game");
-		return gameDao.create(game);
+	public TennisGame initiate(TennisGame tennisGame) {
+		FailFast.notNull(tennisGame, "game");
+		return gameDao.create(tennisGame);
 	}
 
-	public Game getById(int id) {
+	public TennisGame getById(int id) {
 		return gameDao.retrieve(id);
+	}
+
+	public TennisGame win(TennisGame tennisGame, Player player) {
+		FailFast.notNull(tennisGame, "game");
+		FailFast.notNull(player, "player");
+
+		if (!tennisGame.isPlayer(player))
+			throw new IllegalArgumentException("Player " + player + " not taking part in game " + tennisGame);
+
+		return tennisGame.win(player);
 	}
 }

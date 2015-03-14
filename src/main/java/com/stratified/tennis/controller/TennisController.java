@@ -5,8 +5,8 @@ import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
-import com.stratified.tennis.model.Game;
-import com.stratified.tennis.service.GameService;
+import com.stratified.tennis.model.TennisGame;
+import com.stratified.tennis.service.TennisGameService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TennisController {
 	@Autowired
-	private GameService gameService;
+	private TennisGameService tennisGameService;
 	@Autowired
 	private ModelToJsonConverter modelToJsonConverter;
 
@@ -30,20 +30,20 @@ public class TennisController {
 		if (initiate.getPlayer1().equals(initiate.getPlayer2()))
 			throw new PlayerNameInvalidException("player can't play against himself");
 
-		Game game = gameService.initiate(modelToJsonConverter.toGame(initiate));
-		return new GameInitiateResponse(game.getId());
+		TennisGame tennisGame = tennisGameService.initiate(modelToJsonConverter.toGame(initiate));
+		return new GameInitiateResponse(tennisGame.getId());
 	}
 
 	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)
 	public void wonGame(@PathVariable int gameId, @PathVariable String playerName) {
-		Game game = getGame(gameId);
-		if (!game.isPlayer(playerName))
+		TennisGame tennisGame = getGame(gameId);
+		if (!tennisGame.isPlayer(playerName))
 			throw new PlayerNameInvalidException("player not part of this game :" + playerName);
 	}
 
-	private Game getGame(int gameId) {
-		Game game = gameService.getById(gameId);
-		if (game == null) throw new GameNotFoundException("game with id " + gameId + " not found");
-		return game;
+	private TennisGame getGame(int gameId) {
+		TennisGame tennisGame = tennisGameService.getById(gameId);
+		if (tennisGame == null) throw new GameNotFoundException("game with id " + gameId + " not found");
+		return tennisGame;
 	}
 }

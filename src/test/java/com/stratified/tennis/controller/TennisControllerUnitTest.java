@@ -5,9 +5,9 @@ import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
-import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.model.TestData;
-import com.stratified.tennis.service.GameService;
+import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class TennisControllerUnitTest {
 
 	@Mock
-	private GameService gameService;
+	private TennisGameService tennisGameService;
 	@Mock
 	private ModelToJsonConverter modelToJsonConverter;
 	@InjectMocks
@@ -30,9 +30,9 @@ public class TennisControllerUnitTest {
 	@Test
 	public void initiatePositive() {
 		GameInitiate initiate = new GameInitiate("Kostas", "Nick");
-		Game game = TestData.GAME;
-		when(modelToJsonConverter.toGame(initiate)).thenReturn(game);
-		when(gameService.initiate(game)).thenReturn(game.withId(5));
+		TennisGame tennisGame = TestData.TENNIS_GAME;
+		when(modelToJsonConverter.toGame(initiate)).thenReturn(tennisGame);
+		when(tennisGameService.initiate(tennisGame)).thenReturn(tennisGame.withId(5));
 		GameInitiateResponse response = tennisController.initiate(initiate);
 		assertEquals(5, response.getGameId());
 	}
@@ -60,8 +60,8 @@ public class TennisControllerUnitTest {
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void wonGameNegativeDueToPlayerInvalid() {
-		Game game = TestData.GAME;
-		when(gameService.getById(5)).thenReturn(game);
+		TennisGame tennisGame = TestData.TENNIS_GAME;
+		when(tennisGameService.getById(5)).thenReturn(tennisGame);
 		tennisController.wonGame(5, "invalid player");
 	}
 

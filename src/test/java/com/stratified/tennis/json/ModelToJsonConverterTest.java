@@ -1,6 +1,6 @@
 package com.stratified.tennis.json;
 
-import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TennisGame;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,8 +10,8 @@ public class ModelToJsonConverterTest {
 
 	@Test
 	public void testToGame() {
-		Game game = converter.toGame(new GameInitiate("Kostas", "Nick"));
-		assertEquals("Kostas", game.getPlayer1().getName());
-		assertEquals("Nick", game.getPlayer2().getName());
+		TennisGame tennisGame = converter.toGame(new GameInitiate("Kostas", "Nick"));
+		assertEquals("Kostas", tennisGame.getPlayer1().getName());
+		assertEquals("Nick", tennisGame.getPlayer2().getName());
 	}
 }

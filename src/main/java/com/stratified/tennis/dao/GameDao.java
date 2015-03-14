@@ -1,7 +1,7 @@
 package com.stratified.tennis.dao;
 
-import com.stratified.tennis.model.Game;
 import com.stratified.tennis.model.Player;
+import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.util.FailFast;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,42 +30,42 @@ public class GameDao {
 	private DataSource dataSource;
 
 	private SqlUpdate createSqlUpdate;
-	private MappingSqlQueryWithParameters<Game> gameSqlQuery;
+	private MappingSqlQueryWithParameters<TennisGame> gameSqlQuery;
 
 	@PostConstruct
 	private void init() {
 		createSqlUpdate = new SqlUpdate(dataSource, "insert into game(player1,player2,start) values(?,?,?)", new int[]{Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP});
 		createSqlUpdate.setReturnGeneratedKeys(true);
 
-		gameSqlQuery = new MappingSqlQueryWithParameters<Game>(dataSource, "select id,player1,player2,start,stop from game where id=?") {
+		gameSqlQuery = new MappingSqlQueryWithParameters<TennisGame>(dataSource, "select id,player1,player2,start,stop from game where id=?") {
 			@Override
-			protected Game mapRow(ResultSet rs, int rowNum, Object[] parameters, Map context) throws SQLException {
+			protected TennisGame mapRow(ResultSet rs, int rowNum, Object[] parameters, Map context) throws SQLException {
 				Timestamp stop = rs.getTimestamp(5);
-				Game game = Game.newBuilder().id(rs.getInt(1))
+				TennisGame tennisGame = TennisGame.newBuilder().id(rs.getInt(1))
 						.player1(Player.of(rs.getString(2)))
 						.player2(Player.of(rs.getString(3)))
 						.start(new DateTime(rs.getTimestamp(4)))
 						.stop(stop == null ? null : new DateTime(stop))
 						.build();
-				return game;
+				return tennisGame;
 			}
 		};
 		gameSqlQuery.setParameters(new SqlParameter[]{new SqlParameter(Types.INTEGER)});
 	}
 
-	public Game create(Game game) {
-		FailFast.notNull(game, "game");
+	public TennisGame create(TennisGame tennisGame) {
+		FailFast.notNull(tennisGame, "game");
 
 		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		createSqlUpdate.update(new Object[]{game.getPlayer1().getName(), game.getPlayer2().getName(), new java.sql.Date(game.getStart().getMillis())}, generatedKeyHolder);
+		createSqlUpdate.update(new Object[]{tennisGame.getPlayer1().getName(), tennisGame.getPlayer2().getName(), new java.sql.Date(tennisGame.getStart().getMillis())}, generatedKeyHolder);
 		int id = generatedKeyHolder.getKey().intValue();
-		return game.withId(id);
+		return tennisGame.withId(id);
 	}
 
-	public Game retrieve(int id) {
-		List<Game> games = gameSqlQuery.execute(id);
-		if (games.isEmpty()) return null;
-		if (games.size() != 1) throw new IllegalStateException("database corrupted, 2 games with id " + id);
-		return games.get(0);
+	public TennisGame retrieve(int id) {
+		List<TennisGame> tennisGames = gameSqlQuery.execute(id);
+		if (tennisGames.isEmpty()) return null;
+		if (tennisGames.size() != 1) throw new IllegalStateException("database corrupted, 2 games with id " + id);
+		return tennisGames.get(0);
 	}
 }

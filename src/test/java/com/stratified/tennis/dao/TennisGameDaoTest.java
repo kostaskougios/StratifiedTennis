@@ -1,7 +1,7 @@
 package com.stratified.tennis.dao;
 
 import com.stratified.tennis.di.Database;
-import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.model.TestData;
 import com.stratified.tennis.testdi.GameBackendBeans;
 import org.junit.Test;
@@ -14,25 +14,25 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Database.class, GameBackendBeans.class})
-public class GameDaoTest {
+public class TennisGameDaoTest {
 	@Autowired
 	private GameDao gameDao;
 
-	private Game game = TestData.GAME;
+	private TennisGame tennisGame = TestData.TENNIS_GAME;
 
 	@Test
 	public void create() {
-		Game created = gameDao.create(game);
+		TennisGame created = gameDao.create(tennisGame);
 		assertTrue(created.getId() > 0);
-		assertEquals(game.getPlayer1(), created.getPlayer1());
-		assertEquals(game.getPlayer2(), created.getPlayer2());
+		assertEquals(tennisGame.getPlayer1(), created.getPlayer1());
+		assertEquals(tennisGame.getPlayer2(), created.getPlayer2());
 	}
 
 	@Test
 	public void retrievePositive() {
-		Game created = gameDao.create(game);
+		TennisGame created = gameDao.create(tennisGame);
 
-		Game retrieved = gameDao.retrieve(created.getId());
+		TennisGame retrieved = gameDao.retrieve(created.getId());
 		assertEquals(created, retrieved);
 	}
 

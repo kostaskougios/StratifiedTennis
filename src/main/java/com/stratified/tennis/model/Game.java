@@ -1,67 +1,49 @@
 package com.stratified.tennis.model;
 
-import com.stratified.tennis.util.FailFast;
-import org.joda.time.DateTime;
+import javax.annotation.concurrent.Immutable;
 
 /**
+ * a game within a tennis game. keeps the scores for the game
+ *
  * @author kostas.kougios
- * Date: 13/03/15
+ * Date: 14/03/15
  */
+@Immutable
 public final class Game {
-	private final int id;
-	private final Player player1, player2;
-	private final DateTime start, stop;
+	private static final Game NEW_GAME = new Game(0, 0);
+	private final int player1Score;
+	private final int player2Score;
 
-	private Game(int id, Player player1, Player player2, DateTime start, DateTime stop) {
-		FailFast.notNull(player1, "player1");
-		FailFast.notNull(player2, "player2");
-		FailFast.notNull(start, "start");
-
-		this.id = id;
-		this.player1 = player1;
-		this.player2 = player2;
-		this.start = start;
-		this.stop = stop;
-	}
-
-	public static Game newGame(Player player1, Player player2) {
-		return new Game(-1, player1, player2, DateTime.now(), null);
-	}
-
-	public static Builder newBuilder() {
-		return new Builder();
-	}
-
-	public int getId() {
-		return id;
+	private Game(int player1Score, int player2Score) {
+		this.player1Score = player1Score;
+		this.player2Score = player2Score;
 	}
 
 	/**
-	 * @param id the new id
-	 * @return a new instance of Game which has the provided id
+	 * @return Game(0, 0)
 	 */
-	public Game withId(int id) {
-		return new Game(id, player1, player2, start, stop);
+	public static Game newGame() {
+		return NEW_GAME;
 	}
 
-	public Player getPlayer1() {
-		return player1;
+	public static Game of(int player1Score, int player2Score) {
+		return new Game(player1Score, player2Score);
 	}
 
-	public Player getPlayer2() {
-		return player2;
+	public int getPlayer1Score() {
+		return player1Score;
 	}
 
-	public Status getStatus() {
-		return stop == null ? Status.ONGOING : Status.COMPLETED;
+	public int getPlayer2Score() {
+		return player2Score;
 	}
 
-	public DateTime getStart() {
-		return start;
+	public Game winPlayer1() {
+		return new Game(player1Score + 1, player2Score);
 	}
 
-	public DateTime getStop() {
-		return stop;
+	public Game winPlayer2() {
+		return new Game(player1Score, player2Score + 1);
 	}
 
 	@Override
@@ -71,87 +53,24 @@ public final class Game {
 
 		Game game = (Game) o;
 
-		if (id != game.id) return false;
-		if (!player1.equals(game.player1)) return false;
-		if (!player2.equals(game.player2)) return false;
-		if (!start.equals(game.start)) return false;
-		if (stop != null ? !stop.equals(game.stop) : game.stop != null) return false;
+		if (player1Score != game.player1Score) return false;
+		if (player2Score != game.player2Score) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = id;
-		result = 31 * result + player1.hashCode();
-		result = 31 * result + player2.hashCode();
-		result = 31 * result + start.hashCode();
-		result = 31 * result + (stop != null ? stop.hashCode() : 0);
+		int result = player1Score;
+		result = 31 * result + player2Score;
 		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Game{" +
-				"id='" + id + '\'' +
-				", player1='" + player1 + '\'' +
-				", player2='" + player2 + '\'' +
-				", start=" + start +
-				", stop=" + stop +
+				"player1Score=" + player1Score +
+				", player2Score=" + player2Score +
 				'}';
-	}
-
-	/**
-	 * @param playerName the name of the player we are looking for
-	 * @return true if the player plays the game (is either player1 or 2)
-	 */
-	public boolean isPlayer(String playerName) {
-		FailFast.notNull(playerName, "playerName");
-		return player1.getName().equals(playerName) || player2.getName().equals(playerName);
-	}
-
-	public enum Status {
-		ONGOING, COMPLETED
-	}
-
-
-	public static final class Builder {
-		private int id;
-		private Player player1;
-		private Player player2;
-		private DateTime start;
-		private DateTime stop;
-
-		private Builder() {
-		}
-
-		public Builder id(int id) {
-			this.id = id;
-			return this;
-		}
-
-		public Builder player1(Player player1) {
-			this.player1 = player1;
-			return this;
-		}
-
-		public Builder player2(Player player2) {
-			this.player2 = player2;
-			return this;
-		}
-
-		public Builder start(DateTime start) {
-			this.start = start;
-			return this;
-		}
-
-		public Builder stop(DateTime stop) {
-			this.stop = stop;
-			return this;
-		}
-
-		public Game build() {
-			return new Game(id, player1, player2, start, stop);
-		}
 	}
 }

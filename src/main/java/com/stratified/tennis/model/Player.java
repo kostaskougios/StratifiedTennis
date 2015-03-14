@@ -2,10 +2,13 @@ package com.stratified.tennis.model;
 
 import com.stratified.tennis.util.FailFast;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * @author kostas.kougios
  * Date: 14/03/15
  */
+@Immutable
 public final class Player {
 	private final String name;
 
