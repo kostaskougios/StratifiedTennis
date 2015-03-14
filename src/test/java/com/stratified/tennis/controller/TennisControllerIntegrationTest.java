@@ -1,7 +1,7 @@
 package com.stratified.tennis.controller;
 
-import com.stratified.tennis.json.GameInitiate;
-import com.stratified.tennis.json.GameInitiateResponse;
+import com.stratified.tennis.json.TennisGameInitiate;
+import com.stratified.tennis.json.TennisGameInitiateResponse;
 import com.stratified.tennis.model.Game;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.model.TestData;
@@ -24,7 +24,7 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
 	public void initiatePositive() {
-		GameInitiateResponse response = postJson("/initiate", new GameInitiate("p1", "p2"), GameInitiateResponse.class);
+		TennisGameInitiateResponse response = postJson("/initiate", new TennisGameInitiate("p1", "p2"), TennisGameInitiateResponse.class);
 		assertTrue(response.getGameId() > 0);
 	}
 
@@ -32,7 +32,7 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 	public void initiateNegativeBadInput() throws Exception {
 		// note : we don't have to test all kinds of bad inputs as those are tested in the unit test.
 		// So we only need to guarantee we get a bad request for this test
-		postJson("/initiate", new GameInitiate("", "p2"))
+		postJson("/initiate", new TennisGameInitiate("", "p2"))
 				.andExpect(status().isBadRequest());
 	}
 
@@ -47,7 +47,7 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
 	public void wonNegativeInvalidPlayer() throws Exception {
-		int gameId = postJson("/initiate", new GameInitiate("p1", "p2"), GameInitiateResponse.class).getGameId();
+		int gameId = postJson("/initiate", new TennisGameInitiate("p1", "p2"), TennisGameInitiateResponse.class).getGameId();
 		getJson("/won/{gameId}/{playerName}", gameId, "invalid").andExpect(status().isBadRequest());
 	}
 

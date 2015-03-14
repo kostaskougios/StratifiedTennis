@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ModelToJsonConverter {
-	public TennisGame toGame(GameInitiate gameInitiate) {
-		return TennisGame.newGame(Player.of(gameInitiate.getPlayer1()), Player.of(gameInitiate.getPlayer2()));
+	public TennisGame toGame(TennisGameInitiate tennisGameInitiate) {
+		return TennisGame.newGame(Player.of(tennisGameInitiate.getPlayer1()), Player.of(tennisGameInitiate.getPlayer2()));
 	}
 
 }

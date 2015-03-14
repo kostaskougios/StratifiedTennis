@@ -10,7 +10,7 @@ public class ModelToJsonConverterTest {
 
 	@Test
 	public void testToGame() {
-		TennisGame tennisGame = converter.toGame(new GameInitiate("Kostas", "Nick"));
+		TennisGame tennisGame = converter.toGame(new TennisGameInitiate("Kostas", "Nick"));
 		assertEquals("Kostas", tennisGame.getPlayer1().getName());
 		assertEquals("Nick", tennisGame.getPlayer2().getName());
 	}

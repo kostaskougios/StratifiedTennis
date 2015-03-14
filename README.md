@@ -15,4 +15,4 @@ http://localhost:8080/swagger/index.html
 - domain model classes are immutable and marked as @Immutable
 
 - to simplify things, the tennis game in this impl consists of 2 games no matter who wins them. A game is won when a players score is > 4 and
-at least 2 points higher than the other players score.
+at least 2 points higher than the other players score. This deviates from the original requirements but we've discussed this over email.

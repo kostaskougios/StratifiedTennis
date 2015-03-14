@@ -3,9 +3,9 @@ package com.stratified.tennis.controller;
 import com.stratified.tennis.controller.exceptions.GameIsCompletedException;
 import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
-import com.stratified.tennis.json.GameInitiate;
-import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
+import com.stratified.tennis.json.TennisGameInitiate;
+import com.stratified.tennis.json.TennisGameInitiateResponse;
 import com.stratified.tennis.model.Player;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.service.TennisGameService;
@@ -26,14 +26,14 @@ public class TennisController {
 
 	@RequestMapping(value = "/initiate", method = RequestMethod.POST)
 	@ResponseBody
-	public GameInitiateResponse initiate(@RequestBody GameInitiate initiate) {
+	public TennisGameInitiateResponse initiate(@RequestBody TennisGameInitiate initiate) {
 		if (StringUtils.isBlank(initiate.getPlayer1())) throw new PlayerNameInvalidException("player1 can't be blank");
 		if (StringUtils.isBlank(initiate.getPlayer2())) throw new PlayerNameInvalidException("player2 can't be blank");
 		if (initiate.getPlayer1().equals(initiate.getPlayer2()))
 			throw new PlayerNameInvalidException("player can't play against himself");
 
 		TennisGame tennisGame = tennisGameService.initiate(modelToJsonConverter.toGame(initiate));
-		return new GameInitiateResponse(tennisGame.getId());
+		return new TennisGameInitiateResponse(tennisGame.getId());
 	}
 
 	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)

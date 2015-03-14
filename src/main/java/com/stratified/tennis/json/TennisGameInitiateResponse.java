@@ -4,13 +4,14 @@ package com.stratified.tennis.json;
  * @author kostas.kougios
  * Date: 13/03/15
  */
-public class GameInitiateResponse {
+public class TennisGameInitiateResponse {
 	private int gameId;
 
-	public GameInitiateResponse() {
+	// used for json deserialization
+	public TennisGameInitiateResponse() {
 	}
 
-	public GameInitiateResponse(int gameId) {
+	public TennisGameInitiateResponse(int gameId) {
 		this.gameId = gameId;
 	}
 

@@ -3,9 +3,9 @@ package com.stratified.tennis.controller;
 import com.stratified.tennis.controller.exceptions.GameIsCompletedException;
 import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
-import com.stratified.tennis.json.GameInitiate;
-import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
+import com.stratified.tennis.json.TennisGameInitiate;
+import com.stratified.tennis.json.TennisGameInitiateResponse;
 import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,26 +30,26 @@ public class TennisControllerUnitTest {
 
 	@Test
 	public void initiatePositive() {
-		GameInitiate initiate = new GameInitiate("Kostas", "Nick");
+		TennisGameInitiate initiate = new TennisGameInitiate("Kostas", "Nick");
 		when(modelToJsonConverter.toGame(initiate)).thenReturn(TENNIS_GAME);
 		when(tennisGameService.initiate(TENNIS_GAME)).thenReturn(TENNIS_GAME_5);
-		GameInitiateResponse response = tennisController.initiate(initiate);
+		TennisGameInitiateResponse response = tennisController.initiate(initiate);
 		assertEquals(5, response.getGameId());
 	}
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void initiateNegativeDueToBlankPlayer1() {
-		tennisController.initiate(new GameInitiate("", "Nick"));
+		tennisController.initiate(new TennisGameInitiate("", "Nick"));
 	}
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void initiateNegativeDueToBlankPlayer2() {
-		tennisController.initiate(new GameInitiate("Kostas", ""));
+		tennisController.initiate(new TennisGameInitiate("Kostas", ""));
 	}
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void initiateNegativeDueToSamePlayer() {
-		tennisController.initiate(new GameInitiate("Kostas", "Kostas"));
+		tennisController.initiate(new TennisGameInitiate("Kostas", "Kostas"));
 	}
 
 	@Test(expected = GameNotFoundException.class)

@@ -6,13 +6,14 @@ package com.stratified.tennis.json;
  * @author kostas.kougios
  * Date: 13/03/15
  */
-public class GameInitiate {
+public class TennisGameInitiate {
 	private String player1, player2;
 
-	public GameInitiate() {
+	// used for json deserialization
+	public TennisGameInitiate() {
 	}
 
-	public GameInitiate(String player1, String player2) {
+	public TennisGameInitiate(String player1, String player2) {
 		this.player1 = player1;
 		this.player2 = player2;
 	}
