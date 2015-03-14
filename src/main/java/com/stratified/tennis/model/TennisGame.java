@@ -144,8 +144,17 @@ public final class TennisGame {
 		return games.get(games.size() - 1);
 	}
 
+	/**
+	 * to simplify things, the tennis game in this impl consists of 2 games no matter who wins them. A game is won when a players score is > 4 and
+	 * at least 2 points higher than the other players score.
+	 *
+	 * @param player    the player who won
+	 * @return the modified TennisGame (always without mutating "this")
+	 */
 	public TennisGame win(Player player) {
 		FailFast.notNull(player, "player");
+		if (getStatus() == Status.COMPLETED)
+			throw new IllegalStateException("game is completed, we can't accept a win by " + player);
 
 		Game currentGame = getCurrentGame();
 		ArrayList<Game> newGames = new ArrayList<>(games.subList(0, games.size() - 1));
@@ -155,6 +164,12 @@ public final class TennisGame {
 			newGames.add(currentGame.winPlayer2());
 		} else throw new IllegalArgumentException("player not part of game : " + player);
 
+		Game lastGame = newGames.get(newGames.size() - 1);
+		DateTime stop = null;
+		if (lastGame.isVictoriousState()) {
+			if (newGames.size() == 2) stop = DateTime.now();
+			else newGames.add(Game.newGame());
+		}
 		return new TennisGame(id, player1, player2, start, stop, newGames);
 	}
 

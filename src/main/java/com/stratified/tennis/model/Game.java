@@ -38,6 +38,10 @@ public final class Game {
 		return player2Score;
 	}
 
+	public boolean isVictoriousState() {
+		return Math.abs(player1Score - player2Score) >= 2 && (player1Score > 4 || player2Score > 4);
+	}
+
 	public Game winPlayer1() {
 		return new Game(player1Score + 1, player2Score);
 	}

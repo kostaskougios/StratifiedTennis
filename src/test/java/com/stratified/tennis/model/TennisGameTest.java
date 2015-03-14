@@ -30,4 +30,36 @@ public class TennisGameTest {
 		assertEquals(1, games.size());
 		assertEquals(Game.of(1, 0), games.get(0));
 	}
+
+	@Test
+	public void player2WinsFirstGame() {
+		TennisGame g = tennisGame.win(tennisGame.getPlayer2());
+		List<Game> games = g.getGames();
+		assertEquals(1, games.size());
+		assertEquals(Game.of(0, 1), games.get(0));
+	}
+
+	@Test
+	public void afterVictoryFor1stGameTheSecondGameIsAdded() {
+		TennisGame g = tennisGame;
+		for (int i = 0; i < 5; i++)
+			g = g.win(tennisGame.getPlayer1());
+		List<Game> games = g.getGames();
+		assertEquals(2, games.size());
+		assertEquals(Game.of(5, 0), games.get(0));
+		assertEquals(Game.of(0, 0), games.get(1));
+		assertEquals(TennisGame.Status.ONGOING, g.getStatus());
+	}
+
+	@Test
+	public void afterVictoryFor2ndGameTheTennisGameIsOver() {
+		TennisGame g = tennisGame;
+		for (int i = 0; i < 10; i++)
+			g = g.win(tennisGame.getPlayer1());
+		List<Game> games = g.getGames();
+		assertEquals(2, games.size());
+		assertEquals(Game.of(5, 0), games.get(0));
+		assertEquals(Game.of(5, 0), games.get(1));
+		assertEquals(TennisGame.Status.COMPLETED, g.getStatus());
+	}
 }
