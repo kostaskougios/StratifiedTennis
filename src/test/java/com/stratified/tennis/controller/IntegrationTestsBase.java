@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -76,6 +77,15 @@ public class IntegrationTestsBase {
 					.andReturn();
 			String contentAsString = mvcResult.getResponse().getContentAsString();
 			return JsonUtil.to(expectedResponseType, contentAsString);
+		} catch (Exception e) {
+			fail(e.getMessage());
+			return null;
+		}
+	}
+
+	protected ResultActions getJson(String uriTemplate, Object... urlVariables) {
+		try {
+			return mockMvc.perform(get(uriTemplate, urlVariables));
 		} catch (Exception e) {
 			fail(e.getMessage());
 			return null;
