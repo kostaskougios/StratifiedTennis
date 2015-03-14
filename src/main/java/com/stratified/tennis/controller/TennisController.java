@@ -32,4 +32,8 @@ public class TennisController {
 		Game game = gameService.initiate(modelToJsonConverter.toGame(initiate));
 		return new GameInitiateResponse(game.getId());
 	}
+
+	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)
+	public void wonGame(@RequestParam int gameId, @RequestParam String playerName) {
+	}
 }

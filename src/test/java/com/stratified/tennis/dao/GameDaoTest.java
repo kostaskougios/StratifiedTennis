@@ -26,4 +26,13 @@ public class GameDaoTest {
 		assertEquals("p1", created.getPlayer1());
 		assertEquals("p2", created.getPlayer2());
 	}
+
+	@Test
+	public void retrieve() {
+		Game game = Game.newGame("p1", "p2");
+		Game created = gameDao.create(game);
+
+		Game retrieved = gameDao.retrieve(created.getId());
+		assertEquals(created, retrieved);
+	}
 }

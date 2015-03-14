@@ -25,4 +25,8 @@ public class GameService {
 		FailFast.notNull(game, "game");
 		return gameDao.create(game);
 	}
+
+	public Game getById(int id) {
+		return gameDao.retrieve(id);
+	}
 }

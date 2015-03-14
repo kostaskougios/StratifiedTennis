@@ -28,6 +28,10 @@ public final class Game {
 		return new Game(-1, player1, player2, DateTime.now(), null);
 	}
 
+	public static Builder newBuilder() {
+		return new Builder();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -99,5 +103,46 @@ public final class Game {
 
 	public enum Status {
 		ONGOING, COMPLETED
+	}
+
+
+	public static final class Builder {
+		private int id;
+		private String player1;
+		private String player2;
+		private DateTime start;
+		private DateTime stop;
+
+		private Builder() {
+		}
+
+		public Builder id(int id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder player1(String player1) {
+			this.player1 = player1;
+			return this;
+		}
+
+		public Builder player2(String player2) {
+			this.player2 = player2;
+			return this;
+		}
+
+		public Builder start(DateTime start) {
+			this.start = start;
+			return this;
+		}
+
+		public Builder stop(DateTime stop) {
+			this.stop = stop;
+			return this;
+		}
+
+		public Game build() {
+			return new Game(id, player1, player2, start, stop);
+		}
 	}
 }
