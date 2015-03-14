@@ -52,6 +52,23 @@ public class TennisGameTest {
 	}
 
 	@Test
+	public void gamesAreInCorrectOrder() {
+		TennisGame g = tennisGame
+				.win(tennisGame.getPlayer1())
+				.win(tennisGame.getPlayer1())
+				.win(tennisGame.getPlayer2())
+				.win(tennisGame.getPlayer2())
+				.win(tennisGame.getPlayer1())
+				.win(tennisGame.getPlayer1())
+				.win(tennisGame.getPlayer1())
+				.win(tennisGame.getPlayer2());
+		List<Game> games = g.getGames();
+		assertEquals(2, games.size());
+		assertEquals(Game.of(5, 2), games.get(0));
+		assertEquals(Game.of(0, 1), games.get(1));
+	}
+
+	@Test
 	public void afterVictoryFor2ndGameTheTennisGameIsOver() {
 		TennisGame g = tennisGame;
 		for (int i = 0; i < 10; i++)

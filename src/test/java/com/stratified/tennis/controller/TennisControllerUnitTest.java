@@ -6,6 +6,7 @@ import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.ModelToJsonConverter;
 import com.stratified.tennis.json.TennisGameInitiate;
 import com.stratified.tennis.json.TennisGameInitiateResponse;
+import com.stratified.tennis.json.TennisGameStatus;
 import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.stratified.tennis.model.TestData.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,5 +76,19 @@ public class TennisControllerUnitTest {
 		when(tennisGameService.getById(5)).thenReturn(TENNIS_GAME_5);
 		tennisController.wonGame(5, TENNIS_GAME_5.getPlayer1().getName());
 		verify(tennisGameService).win(TENNIS_GAME_5, TENNIS_GAME_5.getPlayer1());
+	}
+
+	@Test
+	public void gameStatusPositive() {
+		when(tennisGameService.getById(5)).thenReturn(TENNIS_GAME_5);
+		TennisGameStatus expected = new TennisGameStatus();
+		when(modelToJsonConverter.toTennisGameStatus(TENNIS_GAME_5)).thenReturn(expected);
+		TennisGameStatus status = tennisController.tennisGameStatus(5);
+		assertSame(expected, status);
+	}
+
+	@Test(expected = GameNotFoundException.class)
+	public void gameStatusNegativeGameNotFound() {
+		tennisController.tennisGameStatus(5);
 	}
 }

@@ -6,6 +6,7 @@ import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.ModelToJsonConverter;
 import com.stratified.tennis.json.TennisGameInitiate;
 import com.stratified.tennis.json.TennisGameInitiateResponse;
+import com.stratified.tennis.json.TennisGameStatus;
 import com.stratified.tennis.model.Player;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.service.TennisGameService;
@@ -45,6 +46,13 @@ public class TennisController {
 			throw new GameIsCompletedException("game " + gameId + " is completed");
 		Player player = tennisGame.findPlayer(playerName);
 		tennisGameService.win(tennisGame, player);
+	}
+
+	@RequestMapping(value = "/status/{gameId}", method = RequestMethod.GET)
+	public TennisGameStatus tennisGameStatus(@PathVariable int gameId) {
+		TennisGame tennisGame = getGame(gameId);
+		TennisGameStatus status = modelToJsonConverter.toTennisGameStatus(tennisGame);
+		return status;
 	}
 
 	private TennisGame getGame(int gameId) {
