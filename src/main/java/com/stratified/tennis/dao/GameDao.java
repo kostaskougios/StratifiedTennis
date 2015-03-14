@@ -1,16 +1,15 @@
 package com.stratified.tennis.dao;
 
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.util.FailFast;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import java.sql.Types;
 
 /**
  * @author kostas.kougios
@@ -19,22 +18,22 @@ import java.util.Map;
 @Component
 public class GameDao {
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private DataSource dataSource;
+
+	private SqlUpdate createSqlUpdate;
+
+	@PostConstruct
+	private void init() {
+		createSqlUpdate = new SqlUpdate(dataSource, "insert into game(player1,player2,start) values(?,?,?)", new int[]{Types.VARCHAR, Types.VARCHAR, Types.DATE});
+		createSqlUpdate.setReturnGeneratedKeys(true);
+	}
 
 	public Game create(Game game) {
-		List<Map<String, Object>> keys = new ArrayList<>(1);
-		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder(keys);
-		PreparedStatementCreator psc = con -> {
-			PreparedStatement st = con.prepareStatement("insert into game(player1,player2,start) values(?,?,?)");
-			st.setString(1, game.getPlayer1());
-			st.setString(2, game.getPlayer2());
+		FailFast.notNull(game, "game");
 
-			st.setDate(3, new java.sql.Date(game.getStart().getMillis()));
-			return st;
-		};
-
-		jdbcTemplate.update(psc, generatedKeyHolder);
-		int id = (int) keys.get(0).entrySet().iterator().next().getValue();
+		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+		createSqlUpdate.update(new Object[]{game.getPlayer1(), game.getPlayer2(), new java.sql.Date(game.getStart().getMillis())}, generatedKeyHolder);
+		int id = generatedKeyHolder.getKey().intValue();
 		return game.withId(id);
 	}
 }

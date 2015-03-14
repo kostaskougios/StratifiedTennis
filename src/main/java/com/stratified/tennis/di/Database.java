@@ -32,6 +32,7 @@ public class Database {
 
 	@PostConstruct
 	private void initializeDb() throws Exception {
+		// create the database schema
 		String ddl = IOUtils.toString(getClass().getResourceAsStream("/database/ddl.sql"));
 		jdbcTemplate().update(ddl);
 	}
