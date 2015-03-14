@@ -3,6 +3,8 @@ package com.stratified.tennis.controller;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TennisGame;
+import com.stratified.tennis.model.TestData;
 import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +38,30 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
 	public void wonPositive() throws Exception {
+		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME);
+
+		getJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isOk());
+
+		assertEquals(Game.of(1, 0), tennisGameService.getById(game.getId()).getCurrentGame());
+	}
+
+	@Test
+	public void wonNegativeInvalidPlayer() throws Exception {
 		int gameId = postJson("/initiate", new GameInitiate("p1", "p2"), GameInitiateResponse.class).getGameId();
+		getJson("/won/{gameId}/{playerName}", gameId, "invalid").andExpect(status().isBadRequest());
+	}
 
-		getJson("/won/{gameId}/{playerName}", gameId, "p1").andExpect(status().isOk());
+	@Test
+	public void wonNegativeInvalidGame() throws Exception {
+		getJson("/won/{gameId}/{playerName}", 6, "p1").andExpect(status().isNotFound());
+	}
 
-		assertEquals(Game.of(1, 0), tennisGameService.getById(gameId).getCurrentGame());
+	@Test
+	public void wonNegativeGameCompleted() throws Exception {
+		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME);
+		for (int i = 0; i < 10; i++)
+			game = tennisGameService.win(game, game.getPlayer1());
+
+		getJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isBadRequest());
 	}
 }
