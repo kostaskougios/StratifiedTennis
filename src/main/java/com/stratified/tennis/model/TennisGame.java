@@ -177,6 +177,12 @@ public final class TennisGame {
 		return new TennisGame(id, player1, player2, start, stop, newGames);
 	}
 
+	public Player findPlayer(String playerName) {
+		if (player1.getName().equals(playerName)) return player1;
+		if (player2.getName().equals(playerName)) return player2;
+		return null;
+	}
+
 	public enum Status {
 		ONGOING, COMPLETED
 	}

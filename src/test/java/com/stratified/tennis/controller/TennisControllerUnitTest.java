@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.stratified.tennis.model.TestData.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,4 +69,10 @@ public class TennisControllerUnitTest {
 		tennisController.wonGame(5, PLAYER1.getName());
 	}
 
+	@Test
+	public void wonGamePositive() {
+		when(tennisGameService.getById(5)).thenReturn(TENNIS_GAME_5);
+		tennisController.wonGame(5, TENNIS_GAME_5.getPlayer1().getName());
+		verify(tennisGameService).win(TENNIS_GAME_5, TENNIS_GAME_5.getPlayer1());
+	}
 }

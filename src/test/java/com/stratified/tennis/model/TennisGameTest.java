@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TennisGameTest {
 	private TennisGame tennisGame = TestData.TENNIS_GAME;
@@ -61,5 +61,27 @@ public class TennisGameTest {
 		assertEquals(Game.of(5, 0), games.get(0));
 		assertEquals(Game.of(5, 0), games.get(1));
 		assertEquals(TennisGame.Status.COMPLETED, g.getStatus());
+	}
+
+	@Test
+	public void findPlayerPositive() {
+		assertEquals(tennisGame.getPlayer1(), tennisGame.findPlayer(tennisGame.getPlayer1().getName()));
+		assertEquals(tennisGame.getPlayer2(), tennisGame.findPlayer(tennisGame.getPlayer2().getName()));
+	}
+
+	@Test
+	public void findPlayerNegative() {
+		assertNull(tennisGame.findPlayer("x"));
+	}
+
+	@Test
+	public void isPlayerPositive() {
+		assertTrue(tennisGame.isPlayer(tennisGame.getPlayer1().getName()));
+		assertTrue(tennisGame.isPlayer(tennisGame.getPlayer2().getName()));
+	}
+
+	@Test
+	public void isPlayerNegative() {
+		assertFalse(tennisGame.isPlayer("x"));
 	}
 }

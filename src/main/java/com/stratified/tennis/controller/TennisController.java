@@ -6,6 +6,7 @@ import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
+import com.stratified.tennis.model.Player;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.service.TennisGameService;
 import org.apache.commons.lang.StringUtils;
@@ -42,6 +43,8 @@ public class TennisController {
 			throw new PlayerNameInvalidException("player not part of this game :" + playerName);
 		if (tennisGame.getStatus() == TennisGame.Status.COMPLETED)
 			throw new GameIsCompletedException("game " + gameId + " is completed");
+		Player player = tennisGame.findPlayer(playerName);
+		tennisGameService.win(tennisGame, player);
 	}
 
 	private TennisGame getGame(int gameId) {
