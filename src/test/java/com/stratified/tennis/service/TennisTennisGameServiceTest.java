@@ -1,6 +1,7 @@
 package com.stratified.tennis.service;
 
 import com.stratified.tennis.dao.GameDao;
+import com.stratified.tennis.model.Game;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.model.TestData;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class TennisTennisGameServiceTest {
 	private TennisGame tennisGame5 = tennisGame.withId(5);
 
 	@Test
-	public void testInitiate() {
+	public void initiate() {
 		when(gameDao.create(tennisGame)).thenReturn(tennisGame5);
 		TennisGame g = tennisGameService.initiate(tennisGame);
 		assertEquals(5, g.getId());
@@ -32,9 +33,16 @@ public class TennisTennisGameServiceTest {
 	}
 
 	@Test
-	public void testGetById() {
+	public void getById() {
 		when(gameDao.retrieve(5)).thenReturn(tennisGame5);
 		assertEquals(tennisGame5, tennisGameService.getById(5));
 		verify(gameDao).retrieve(5);
+	}
+
+	@Test
+	public void win() {
+		TennisGame tg = tennisGameService.win(tennisGame5, tennisGame5.getPlayer1());
+		assertEquals(Game.of(1, 0), tg.getCurrentGame());
+		verify(gameDao).update(tg);
 	}
 }
