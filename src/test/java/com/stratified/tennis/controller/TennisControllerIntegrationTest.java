@@ -2,6 +2,7 @@ package com.stratified.tennis.controller;
 
 import com.stratified.tennis.json.TennisGameInitiate;
 import com.stratified.tennis.json.TennisGameInitiateResponse;
+import com.stratified.tennis.json.TennisGameStatus;
 import com.stratified.tennis.model.Game;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.model.TestData;
@@ -9,6 +10,8 @@ import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.stratified.tennis.model.TestData.PLAYER1;
+import static com.stratified.tennis.model.TestData.PLAYER2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,8 +50,8 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
 	public void wonNegativeInvalidPlayer() throws Exception {
-		int gameId = postJson("/initiate", new TennisGameInitiate("p1", "p2"), TennisGameInitiateResponse.class).getGameId();
-		getJson("/won/{gameId}/{playerName}", gameId, "invalid").andExpect(status().isBadRequest());
+		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME);
+		getJson("/won/{gameId}/{playerName}", game.getId(), "invalid").andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -64,4 +67,20 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 		getJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isBadRequest());
 	}
+
+	@Test
+	public void gameStatusPositive() throws Exception {
+		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME_COMPLETED);
+		TennisGameStatus status = getJson("/status/{gameId}", TennisGameStatus.class, game.getId());
+		// the correctness of the result is tested in ModelToJsonConverterTest, no need to duplicate here.
+		// we will do a quick sanity check
+		assertEquals(PLAYER1.getName(), status.getPlayer1());
+		assertEquals(PLAYER2.getName(), status.getPlayer2());
+	}
+
+	@Test
+	public void gameStatusNegativeGameNotFound() throws Exception {
+		getJson("/status/{gameId}", 1000).andExpect(status().isNotFound());
+	}
+
 }

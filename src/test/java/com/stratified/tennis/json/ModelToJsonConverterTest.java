@@ -34,5 +34,8 @@ public class ModelToJsonConverterTest {
 		GameStatus s0 = statuses.get(0);
 		assertEquals(5, s0.getPlayer1Score());
 		assertEquals(2, s0.getPlayer2Score());
+		GameStatus s1 = statuses.get(1);
+		assertEquals(5, s1.getPlayer1Score());
+		assertEquals(1, s1.getPlayer2Score());
 	}
 }

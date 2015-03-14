@@ -85,7 +85,18 @@ public class IntegrationTestsBase {
 
 	protected ResultActions getJson(String uriTemplate, Object... urlVariables) {
 		try {
-			return mockMvc.perform(get(uriTemplate, urlVariables));
+			return mockMvc.perform(get(uriTemplate, urlVariables).accept(MediaType.APPLICATION_JSON));
+		} catch (Exception e) {
+			fail(e.getMessage());
+			return null;
+		}
+	}
+
+	protected <T> T getJson(String uriTemplate, Class<T> expectedResponseType, Object... urlVariables) {
+		try {
+			MvcResult mvcResult = getJson(uriTemplate, urlVariables).andExpect(status().isOk()).andReturn();
+			String contentAsString = mvcResult.getResponse().getContentAsString();
+			return JsonUtil.to(expectedResponseType, contentAsString);
 		} catch (Exception e) {
 			fail(e.getMessage());
 			return null;
