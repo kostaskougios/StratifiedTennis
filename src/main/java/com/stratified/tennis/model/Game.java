@@ -101,6 +101,15 @@ public final class Game {
 				'}';
 	}
 
+	/**
+	 * @param playerName the name of the player we are looking for
+	 * @return true if the player plays the game (is either player1 or 2)
+	 */
+	public boolean isPlayer(String playerName) {
+		FailFast.notNull(playerName, "playerName");
+		return player1.getName().equals(playerName) || player2.getName().equals(playerName);
+	}
+
 	public enum Status {
 		ONGOING, COMPLETED
 	}

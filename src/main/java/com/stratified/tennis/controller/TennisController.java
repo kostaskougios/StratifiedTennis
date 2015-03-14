@@ -35,8 +35,10 @@ public class TennisController {
 	}
 
 	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)
-	public void wonGame(@RequestParam int gameId, @RequestParam String playerName) {
+	public void wonGame(@PathVariable int gameId, @PathVariable String playerName) {
 		Game game = getGame(gameId);
+		if (!game.isPlayer(playerName))
+			throw new PlayerNameInvalidException("player not part of this game :" + playerName);
 	}
 
 	private Game getGame(int gameId) {

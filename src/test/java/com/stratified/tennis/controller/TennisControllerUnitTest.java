@@ -1,5 +1,6 @@
 package com.stratified.tennis.controller;
 
+import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
@@ -50,6 +51,18 @@ public class TennisControllerUnitTest {
 	@Test(expected = PlayerNameInvalidException.class)
 	public void initiateNegativeDueToSamePlayer() {
 		tennisController.initiate(new GameInitiate("Kostas", "Kostas"));
+	}
+
+	@Test(expected = GameNotFoundException.class)
+	public void wonGameNegativeDueToGameNotFound() {
+		tennisController.wonGame(6, "x");
+	}
+
+	@Test(expected = PlayerNameInvalidException.class)
+	public void wonGameNegativeDueToPlayerInvalid() {
+		Game game = TestData.GAME;
+		when(gameService.getById(5)).thenReturn(game);
+		tennisController.wonGame(5, "invalid player");
 	}
 
 }
