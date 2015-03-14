@@ -1,6 +1,8 @@
 package com.stratified.tennis.util;
 
 /**
+ * can be used for not-yet implemented functionality. Makes it easier to trace.
+ *
  * @author kostas.kougios
  * Date: 13/03/15
  */

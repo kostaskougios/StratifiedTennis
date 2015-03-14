@@ -3,6 +3,8 @@ package com.stratified.tennis.util;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * fail fast if args are invalid
+ *
  * @author kostas.kougios
  * Date: 13/03/15
  */

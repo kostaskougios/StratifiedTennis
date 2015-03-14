@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * configures beans related to databases
+ * configures beans related to databases and enables spring transaction management
  *
  * @author kostas.kougios
  * Date: 13/03/15

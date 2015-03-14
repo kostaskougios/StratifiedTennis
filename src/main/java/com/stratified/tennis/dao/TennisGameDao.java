@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Stores & retrieves games from the database. Uses spring-jdbc.
+ * Transactions are done in the service layer (best-practise)
+ *
  * @author kostas.kougios
  * Date: 13/03/15
  */

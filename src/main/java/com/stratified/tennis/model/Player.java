@@ -5,6 +5,8 @@ import com.stratified.tennis.util.FailFast;
 import javax.annotation.concurrent.Immutable;
 
 /**
+ * The player, just the name for now but still it is type safe to not just use a string in the domain model.
+ *
  * @author kostas.kougios
  * Date: 14/03/15
  */
