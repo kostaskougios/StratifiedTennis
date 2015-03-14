@@ -1,12 +1,11 @@
 package com.stratified.tennis.controller;
 
+import com.stratified.tennis.controller.exceptions.GameIsCompletedException;
 import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
-import com.stratified.tennis.model.TennisGame;
-import com.stratified.tennis.model.TestData;
 import com.stratified.tennis.service.TennisGameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.stratified.tennis.model.TestData.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -30,13 +30,11 @@ public class TennisControllerUnitTest {
 	@Test
 	public void initiatePositive() {
 		GameInitiate initiate = new GameInitiate("Kostas", "Nick");
-		TennisGame tennisGame = TestData.TENNIS_GAME;
-		when(modelToJsonConverter.toGame(initiate)).thenReturn(tennisGame);
-		when(tennisGameService.initiate(tennisGame)).thenReturn(tennisGame.withId(5));
+		when(modelToJsonConverter.toGame(initiate)).thenReturn(TENNIS_GAME);
+		when(tennisGameService.initiate(TENNIS_GAME)).thenReturn(TENNIS_GAME_5);
 		GameInitiateResponse response = tennisController.initiate(initiate);
 		assertEquals(5, response.getGameId());
 	}
-
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void initiateNegativeDueToBlankPlayer1() {
@@ -60,9 +58,14 @@ public class TennisControllerUnitTest {
 
 	@Test(expected = PlayerNameInvalidException.class)
 	public void wonGameNegativeDueToPlayerInvalid() {
-		TennisGame tennisGame = TestData.TENNIS_GAME;
-		when(tennisGameService.getById(5)).thenReturn(tennisGame);
+		when(tennisGameService.getById(5)).thenReturn(TENNIS_GAME_5);
 		tennisController.wonGame(5, "invalid player");
+	}
+
+	@Test(expected = GameIsCompletedException.class)
+	public void wonGameNegativeDueToCompletedGame() {
+		when(tennisGameService.getById(5)).thenReturn(TENNIS_GAME_COMPLETED);
+		tennisController.wonGame(5, PLAYER1.getName());
 	}
 
 }

@@ -22,7 +22,7 @@ public class TennisTennisGameServiceTest {
 	private TennisGameService tennisGameService;
 
 	private TennisGame tennisGame = TestData.TENNIS_GAME;
-	private TennisGame tennisGame5 = tennisGame.withId(5);
+	private TennisGame tennisGame5 = TestData.TENNIS_GAME_5;
 
 	@Test
 	public void initiate() {

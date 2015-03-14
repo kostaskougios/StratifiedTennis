@@ -1,5 +1,6 @@
 package com.stratified.tennis.controller;
 
+import com.stratified.tennis.controller.exceptions.GameIsCompletedException;
 import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
@@ -39,6 +40,8 @@ public class TennisController {
 		TennisGame tennisGame = getGame(gameId);
 		if (!tennisGame.isPlayer(playerName))
 			throw new PlayerNameInvalidException("player not part of this game :" + playerName);
+		if (tennisGame.getStatus() == TennisGame.Status.COMPLETED)
+			throw new GameIsCompletedException("game " + gameId + " is completed");
 	}
 
 	private TennisGame getGame(int gameId) {
