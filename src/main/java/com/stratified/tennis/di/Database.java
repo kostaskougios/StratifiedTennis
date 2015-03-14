@@ -4,10 +4,13 @@ import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -17,6 +20,7 @@ import java.util.Properties;
  * Date: 13/03/15
  */
 @Configuration
+@EnableTransactionManagement
 public class Database {
 	@Bean
 	public DataSource dataSource() throws Exception {
@@ -33,7 +37,15 @@ public class Database {
 	@PostConstruct
 	private void initializeDb() throws Exception {
 		// create the database schema
-		String ddl = IOUtils.toString(getClass().getResourceAsStream("/database/ddl.sql"));
-		jdbcTemplate().update(ddl);
+		try {
+			jdbcTemplate().update(getDDL("/database/drop-ddl.sql"));
+		} catch (BadSqlGrammarException e) {
+			// ignore because it is caused by missing tables
+		}
+		jdbcTemplate().update(getDDL("/database/ddl.sql"));
+	}
+
+	private String getDDL(String resource) throws IOException {
+		return IOUtils.toString(getClass().getResourceAsStream(resource));
 	}
 }

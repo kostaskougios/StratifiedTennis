@@ -21,6 +21,8 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
 	public void initiateNegativeBadInput() throws Exception {
+		// note : we don't have to test all kinds of bad inputs as those are tested in the unit test.
+		// So we only need to guarantee we get a bad request for this test
 		postJson("/initiate", new GameInitiate("", "p2"))
 				.andExpect(status().isBadRequest());
 	}
