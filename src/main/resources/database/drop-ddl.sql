@@ -1,1 +1,2 @@
-drop table game
+drop table tennisgame;
+drop table game;

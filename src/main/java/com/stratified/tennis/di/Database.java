@@ -38,14 +38,16 @@ public class Database {
 	private void initializeDb() throws Exception {
 		// create the database schema
 		try {
-			jdbcTemplate().update(getDDL("/database/drop-ddl.sql"));
+			for (String ddl : getDDL("/database/drop-ddl.sql"))
+				jdbcTemplate().update(ddl);
 		} catch (BadSqlGrammarException e) {
 			// ignore because it is caused by missing tables
 		}
-		jdbcTemplate().update(getDDL("/database/ddl.sql"));
+		for (String ddl : getDDL("/database/ddl.sql"))
+			jdbcTemplate().update(ddl);
 	}
 
-	private String getDDL(String resource) throws IOException {
-		return IOUtils.toString(getClass().getResourceAsStream(resource));
+	private String[] getDDL(String resource) throws IOException {
+		return IOUtils.toString(getClass().getResourceAsStream(resource)).split(";");
 	}
 }

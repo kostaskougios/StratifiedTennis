@@ -41,4 +41,33 @@ public class TennisGameDaoTest {
 		assertNull(gameDao.retrieve(6));
 	}
 
+	@Test
+	public void updateGamesWith1Game() {
+		TennisGame created = gameDao.create(tennisGame);
+		TennisGame gameAfterWins = created.win(created.getPlayer2()).win(created.getPlayer2());
+		gameDao.update(gameAfterWins);
+		assertEquals(gameAfterWins, gameDao.retrieve(created.getId()));
+	}
+
+	@Test
+	public void updateGamesWith2Games() {
+		TennisGame created = gameDao.create(tennisGame);
+		TennisGame gameAfterWins = created;
+		for (int i = 0; i < 10; i++)
+			gameAfterWins = gameAfterWins.win(created.getPlayer2());
+		gameDao.update(gameAfterWins);
+		TennisGame retrieved = gameDao.retrieve(created.getId());
+		assertEquals(gameAfterWins, retrieved);
+	}
+
+	@Test
+	public void updateGamesWith2GamesGameEnded() {
+		TennisGame created = gameDao.create(tennisGame);
+		TennisGame gameAfterWins = created;
+		for (int i = 0; i < 10; i++)
+			gameAfterWins = gameAfterWins.win(created.getPlayer2());
+		gameDao.update(gameAfterWins);
+		TennisGame retrieved = gameDao.retrieve(created.getId());
+		assertEquals(TennisGame.Status.COMPLETED, retrieved.getStatus());
+	}
 }

@@ -118,12 +118,13 @@ public final class TennisGame {
 
 	@Override
 	public String toString() {
-		return "Game{" +
-				"id='" + id + '\'' +
-				", player1='" + player1 + '\'' +
-				", player2='" + player2 + '\'' +
+		return "TennisGame{" +
+				"id=" + id +
+				", player1=" + player1 +
+				", player2=" + player2 +
 				", start=" + start +
 				", stop=" + stop +
+				", games=" + games +
 				'}';
 	}
 
@@ -156,6 +157,7 @@ public final class TennisGame {
 		if (getStatus() == Status.COMPLETED)
 			throw new IllegalStateException("game is completed, we can't accept a win by " + player);
 
+		// we will examine the scores in the current game and increase score accordingly
 		Game currentGame = getCurrentGame();
 		ArrayList<Game> newGames = new ArrayList<>(games.subList(0, games.size() - 1));
 		if (player1.equals(player)) {
@@ -164,6 +166,8 @@ public final class TennisGame {
 			newGames.add(currentGame.winPlayer2());
 		} else throw new IllegalArgumentException("player not part of game : " + player);
 
+		// now we need to settle the game if the game is over and also
+		// settle the tennis game if it is over.
 		Game lastGame = newGames.get(newGames.size() - 1);
 		DateTime stop = null;
 		if (lastGame.isVictoriousState()) {
@@ -184,7 +188,7 @@ public final class TennisGame {
 		private Player player2;
 		private DateTime start;
 		private DateTime stop;
-		private List<Game> games = new ArrayList<>(1);
+		private List<Game> games;
 
 		private Builder() {
 		}
@@ -215,7 +219,12 @@ public final class TennisGame {
 		}
 
 		public TennisGame build() {
-			return new TennisGame(id, player1, player2, start, stop, games.isEmpty() ? getGameInitialState() : games);
+			return new TennisGame(id, player1, player2, start, stop, games == null ? getGameInitialState() : games);
+		}
+
+		public Builder games(List<Game> games) {
+			this.games = games;
+			return this;
 		}
 	}
 }

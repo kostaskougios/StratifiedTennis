@@ -38,6 +38,8 @@ public class TennisGameService {
 		if (!tennisGame.isPlayer(player))
 			throw new IllegalArgumentException("Player " + player + " not taking part in game " + tennisGame);
 
-		return tennisGame.win(player);
+		TennisGame g = tennisGame.win(player);
+		gameDao.update(g);
+		return g;
 	}
 }
