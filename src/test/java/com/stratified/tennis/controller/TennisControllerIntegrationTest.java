@@ -1,9 +1,10 @@
 package com.stratified.tennis.controller;
 
 import com.stratified.tennis.json.GameInitiate;
+import com.stratified.tennis.json.GameInitiateResponse;
 import org.junit.Test;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -13,9 +14,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 
 	@Test
-	public void initiate() throws Exception {
-		postJson("/initiate", new GameInitiate("p1", "p2"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.gameId").value(1));
+	public void initiatePositive() throws Exception {
+		GameInitiateResponse response = postJson("/initiate", new GameInitiate("p1", "p2"), GameInitiateResponse.class);
+		assertTrue(response.getGameId() > 0);
+	}
+
+	@Test
+	public void initiateNegativeBadInput() throws Exception {
+		postJson("/initiate", new GameInitiate("", "p2"))
+				.andExpect(status().isBadRequest());
 	}
 }

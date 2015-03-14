@@ -7,6 +7,9 @@ package com.stratified.tennis.json;
 public class GameInitiateResponse {
 	private int gameId;
 
+	public GameInitiateResponse() {
+	}
+
 	public GameInitiateResponse(int gameId) {
 		this.gameId = gameId;
 	}
