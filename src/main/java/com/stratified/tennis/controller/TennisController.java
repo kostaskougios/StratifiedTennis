@@ -8,10 +8,7 @@ import com.stratified.tennis.model.Game;
 import com.stratified.tennis.service.GameService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author kostas.kougios
@@ -25,6 +22,7 @@ public class TennisController {
 	private ModelToJsonConverter modelToJsonConverter;
 
 	@RequestMapping(value = "/initiate", method = RequestMethod.POST)
+	@ResponseBody
 	public GameInitiateResponse initiate(@RequestBody GameInitiate initiate) {
 		if (StringUtils.isBlank(initiate.getPlayer1())) throw new PlayerNameInvalidException("player1 can't be blank");
 		if (StringUtils.isBlank(initiate.getPlayer2())) throw new PlayerNameInvalidException("player2 can't be blank");
