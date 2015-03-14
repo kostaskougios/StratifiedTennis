@@ -5,6 +5,7 @@ import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
 import com.stratified.tennis.json.ModelToJsonConverter;
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TestData;
 import com.stratified.tennis.service.GameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class TennisControllerUnitTest {
 	@Test
 	public void initiatePositive() {
 		GameInitiate initiate = new GameInitiate("Kostas", "Nick");
-		Game game = Game.newGame("Kostas", "Nick");
+		Game game = TestData.GAME;
 		when(modelToJsonConverter.toGame(initiate)).thenReturn(game);
 		when(gameService.initiate(game)).thenReturn(game.withId(5));
 		GameInitiateResponse response = tennisController.initiate(initiate);

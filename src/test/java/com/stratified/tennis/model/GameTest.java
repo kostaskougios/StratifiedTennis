@@ -5,19 +5,19 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
-	private Game game = Game.newGame("p1", "p2");
+	private Game game = TestData.GAME;
 
 	@Test
 	public void testNewGame() {
-		assertEquals("p1", game.getPlayer1());
-		assertEquals("p2", game.getPlayer2());
+		assertEquals("player1", game.getPlayer1().getName());
+		assertEquals("player2", game.getPlayer2().getName());
 	}
 
 	@Test
 	public void testWithId() {
 		Game g1 = game.withId(1);
 		assertEquals(1, g1.getId());
-		assertEquals("p1", g1.getPlayer1());
-		assertEquals("p2", g1.getPlayer2());
+		assertEquals("player1", g1.getPlayer1().getName());
+		assertEquals("player2", g1.getPlayer2().getName());
 	}
 }

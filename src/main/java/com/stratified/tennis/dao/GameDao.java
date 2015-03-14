@@ -1,6 +1,7 @@
 package com.stratified.tennis.dao;
 
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.Player;
 import com.stratified.tennis.util.FailFast;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class GameDao {
 			protected Game mapRow(ResultSet rs, int rowNum, Object[] parameters, Map context) throws SQLException {
 				Timestamp stop = rs.getTimestamp(5);
 				Game game = Game.newBuilder().id(rs.getInt(1))
-						.player1(rs.getString(2))
-						.player2(rs.getString(3))
+						.player1(Player.of(rs.getString(2)))
+						.player2(Player.of(rs.getString(3)))
 						.start(new DateTime(rs.getTimestamp(4)))
 						.stop(stop == null ? null : new DateTime(stop))
 						.build();
@@ -56,7 +57,7 @@ public class GameDao {
 		FailFast.notNull(game, "game");
 
 		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		createSqlUpdate.update(new Object[]{game.getPlayer1(), game.getPlayer2(), new java.sql.Date(game.getStart().getMillis())}, generatedKeyHolder);
+		createSqlUpdate.update(new Object[]{game.getPlayer1().getName(), game.getPlayer2().getName(), new java.sql.Date(game.getStart().getMillis())}, generatedKeyHolder);
 		int id = generatedKeyHolder.getKey().intValue();
 		return game.withId(id);
 	}

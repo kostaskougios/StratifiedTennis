@@ -9,12 +9,12 @@ import org.joda.time.DateTime;
  */
 public final class Game {
 	private final int id;
-	private final String player1, player2;
+	private final Player player1, player2;
 	private final DateTime start, stop;
 
-	private Game(int id, String player1, String player2, DateTime start, DateTime stop) {
-		FailFast.blank(player1, "player1");
-		FailFast.blank(player2, "player2");
+	private Game(int id, Player player1, Player player2, DateTime start, DateTime stop) {
+		FailFast.notNull(player1, "player1");
+		FailFast.notNull(player2, "player2");
 		FailFast.notNull(start, "start");
 
 		this.id = id;
@@ -24,7 +24,7 @@ public final class Game {
 		this.stop = stop;
 	}
 
-	public static Game newGame(String player1, String player2) {
+	public static Game newGame(Player player1, Player player2) {
 		return new Game(-1, player1, player2, DateTime.now(), null);
 	}
 
@@ -44,11 +44,11 @@ public final class Game {
 		return new Game(id, player1, player2, start, stop);
 	}
 
-	public String getPlayer1() {
+	public Player getPlayer1() {
 		return player1;
 	}
 
-	public String getPlayer2() {
+	public Player getPlayer2() {
 		return player2;
 	}
 
@@ -108,8 +108,8 @@ public final class Game {
 
 	public static final class Builder {
 		private int id;
-		private String player1;
-		private String player2;
+		private Player player1;
+		private Player player2;
 		private DateTime start;
 		private DateTime stop;
 
@@ -121,12 +121,12 @@ public final class Game {
 			return this;
 		}
 
-		public Builder player1(String player1) {
+		public Builder player1(Player player1) {
 			this.player1 = player1;
 			return this;
 		}
 
-		public Builder player2(String player2) {
+		public Builder player2(Player player2) {
 			this.player2 = player2;
 			return this;
 		}

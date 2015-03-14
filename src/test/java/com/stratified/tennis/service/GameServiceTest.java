@@ -2,6 +2,7 @@ package com.stratified.tennis.service;
 
 import com.stratified.tennis.dao.GameDao;
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.TestData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ public class GameServiceTest {
 	@InjectMocks
 	private GameService gameService;
 
-	private Game game = Game.newGame("p1", "p2");
+	private Game game = TestData.GAME;
 	private Game game5 = game.withId(5);
 
 	@Test

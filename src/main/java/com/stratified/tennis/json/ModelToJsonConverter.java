@@ -1,6 +1,7 @@
 package com.stratified.tennis.json;
 
 import com.stratified.tennis.model.Game;
+import com.stratified.tennis.model.Player;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelToJsonConverter {
 	public Game toGame(GameInitiate gameInitiate) {
-		return Game.newGame(gameInitiate.getPlayer1(), gameInitiate.getPlayer2());
+		return Game.newGame(Player.of(gameInitiate.getPlayer1()), Player.of(gameInitiate.getPlayer2()));
 	}
 
 }

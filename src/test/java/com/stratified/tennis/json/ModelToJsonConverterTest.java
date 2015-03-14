@@ -11,7 +11,7 @@ public class ModelToJsonConverterTest {
 	@Test
 	public void testToGame() {
 		Game game = converter.toGame(new GameInitiate("Kostas", "Nick"));
-		assertEquals("Kostas", game.getPlayer1());
-		assertEquals("Nick", game.getPlayer2());
+		assertEquals("Kostas", game.getPlayer1().getName());
+		assertEquals("Nick", game.getPlayer2().getName());
 	}
 }

@@ -1,5 +1,6 @@
 package com.stratified.tennis.controller;
 
+import com.stratified.tennis.controller.exceptions.GameNotFoundException;
 import com.stratified.tennis.controller.exceptions.PlayerNameInvalidException;
 import com.stratified.tennis.json.GameInitiate;
 import com.stratified.tennis.json.GameInitiateResponse;
@@ -35,5 +36,12 @@ public class TennisController {
 
 	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)
 	public void wonGame(@RequestParam int gameId, @RequestParam String playerName) {
+		Game game = getGame(gameId);
+	}
+
+	private Game getGame(int gameId) {
+		Game game = gameService.getById(gameId);
+		if (game == null) throw new GameNotFoundException("game with id " + gameId + " not found");
+		return game;
 	}
 }
