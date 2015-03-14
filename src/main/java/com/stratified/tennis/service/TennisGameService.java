@@ -1,6 +1,6 @@
 package com.stratified.tennis.service;
 
-import com.stratified.tennis.dao.GameDao;
+import com.stratified.tennis.dao.TennisGameDao;
 import com.stratified.tennis.model.Player;
 import com.stratified.tennis.model.TennisGame;
 import com.stratified.tennis.util.FailFast;
@@ -20,15 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TennisGameService {
 	@Autowired
-	private GameDao gameDao;
+	private TennisGameDao tennisGameDao;
 
 	public TennisGame initiate(TennisGame tennisGame) {
 		FailFast.notNull(tennisGame, "game");
-		return gameDao.create(tennisGame);
+		return tennisGameDao.create(tennisGame);
 	}
 
 	public TennisGame getById(int id) {
-		return gameDao.retrieve(id);
+		return tennisGameDao.retrieve(id);
 	}
 
 	public TennisGame win(TennisGame tennisGame, Player player) {
@@ -39,7 +39,7 @@ public class TennisGameService {
 			throw new IllegalArgumentException("Player " + player + " not taking part in game " + tennisGame);
 
 		TennisGame g = tennisGame.win(player);
-		gameDao.update(g);
+		tennisGameDao.update(g);
 		return g;
 	}
 }

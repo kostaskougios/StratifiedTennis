@@ -14,15 +14,15 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Database.class, GameBackendBeans.class})
-public class TennisGameDaoTest {
+public class TennisTennisGameDaoTest {
 	@Autowired
-	private GameDao gameDao;
+	private TennisGameDao tennisGameDao;
 
 	private TennisGame tennisGame = TestData.TENNIS_GAME;
 
 	@Test
 	public void create() {
-		TennisGame created = gameDao.create(tennisGame);
+		TennisGame created = tennisGameDao.create(tennisGame);
 		assertTrue(created.getId() > 0);
 		assertEquals(tennisGame.getPlayer1(), created.getPlayer1());
 		assertEquals(tennisGame.getPlayer2(), created.getPlayer2());
@@ -30,44 +30,44 @@ public class TennisGameDaoTest {
 
 	@Test
 	public void retrievePositive() {
-		TennisGame created = gameDao.create(tennisGame);
+		TennisGame created = tennisGameDao.create(tennisGame);
 
-		TennisGame retrieved = gameDao.retrieve(created.getId());
+		TennisGame retrieved = tennisGameDao.retrieve(created.getId());
 		assertEquals(created, retrieved);
 	}
 
 	@Test
 	public void retrieveNegative() {
-		assertNull(gameDao.retrieve(6));
+		assertNull(tennisGameDao.retrieve(6));
 	}
 
 	@Test
 	public void updateGamesWith1Game() {
-		TennisGame created = gameDao.create(tennisGame);
+		TennisGame created = tennisGameDao.create(tennisGame);
 		TennisGame gameAfterWins = created.win(created.getPlayer2()).win(created.getPlayer2());
-		gameDao.update(gameAfterWins);
-		assertEquals(gameAfterWins, gameDao.retrieve(created.getId()));
+		tennisGameDao.update(gameAfterWins);
+		assertEquals(gameAfterWins, tennisGameDao.retrieve(created.getId()));
 	}
 
 	@Test
 	public void updateGamesWith2Games() {
-		TennisGame created = gameDao.create(tennisGame);
+		TennisGame created = tennisGameDao.create(tennisGame);
 		TennisGame gameAfterWins = created;
 		for (int i = 0; i < 10; i++)
 			gameAfterWins = gameAfterWins.win(created.getPlayer2());
-		gameDao.update(gameAfterWins);
-		TennisGame retrieved = gameDao.retrieve(created.getId());
+		tennisGameDao.update(gameAfterWins);
+		TennisGame retrieved = tennisGameDao.retrieve(created.getId());
 		assertEquals(gameAfterWins, retrieved);
 	}
 
 	@Test
 	public void updateGamesWith2GamesGameEnded() {
-		TennisGame created = gameDao.create(tennisGame);
+		TennisGame created = tennisGameDao.create(tennisGame);
 		TennisGame gameAfterWins = created;
 		for (int i = 0; i < 10; i++)
 			gameAfterWins = gameAfterWins.win(created.getPlayer2());
-		gameDao.update(gameAfterWins);
-		TennisGame retrieved = gameDao.retrieve(created.getId());
+		tennisGameDao.update(gameAfterWins);
+		TennisGame retrieved = tennisGameDao.retrieve(created.getId());
 		assertEquals(TennisGame.Status.COMPLETED, retrieved.getStatus());
 	}
 }

@@ -1,6 +1,6 @@
 package com.stratified.tennis.testdi;
 
-import com.stratified.tennis.dao.GameDao;
+import com.stratified.tennis.dao.TennisGameDao;
 import com.stratified.tennis.service.TennisGameService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GameBackendBeans {
 	@Bean
-	public GameDao gameDao() {
-		return new GameDao();
+	public TennisGameDao gameDao() {
+		return new TennisGameDao();
 	}
 
 	@Bean

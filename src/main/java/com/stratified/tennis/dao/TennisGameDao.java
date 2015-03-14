@@ -26,7 +26,7 @@ import java.util.Map;
  * Date: 13/03/15
  */
 @Component
-public class GameDao {
+public class TennisGameDao {
 	@Autowired
 	private DataSource dataSource;
 
