@@ -30,7 +30,7 @@ public class ModelToJsonConverterTest {
 
 	@Test
 	public void toGameStatusGamesAndScores() {
-		List<GameStatus> statuses = converter.toTennisGameStatus(TENNIS_GAME_COMPLETED).getGameStatuses();
+		List<GameStatus> statuses = converter.toTennisGameStatus(TENNIS_GAME_COMPLETED).getGames();
 		GameStatus s0 = statuses.get(0);
 		assertEquals(5, s0.getPlayer1Score());
 		assertEquals(2, s0.getPlayer2Score());

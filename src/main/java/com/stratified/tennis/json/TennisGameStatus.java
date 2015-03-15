@@ -10,18 +10,18 @@ public class TennisGameStatus {
 	private String player1, player2;
 	private String status;
 	private int durationInSeconds;
-	private List<GameStatus> gameStatuses;
+	private List<GameStatus> games;
 
 	// used for json deserialization
 	public TennisGameStatus() {
 	}
 
-	public TennisGameStatus(String player1, String player2, String status, int durationInSeconds, List<GameStatus> gameStatuses) {
+	public TennisGameStatus(String player1, String player2, String status, int durationInSeconds, List<GameStatus> games) {
 		this.player1 = player1;
 		this.player2 = player2;
 		this.status = status;
 		this.durationInSeconds = durationInSeconds;
-		this.gameStatuses = gameStatuses;
+		this.games = games;
 	}
 
 	public String getPlayer1() {
@@ -40,7 +40,7 @@ public class TennisGameStatus {
 		return durationInSeconds;
 	}
 
-	public List<GameStatus> getGameStatuses() {
-		return gameStatuses;
+	public List<GameStatus> getGames() {
+		return games;
 	}
 }
