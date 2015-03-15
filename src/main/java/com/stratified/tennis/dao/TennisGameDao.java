@@ -82,6 +82,13 @@ public class TennisGameDao {
 
 	}
 
+	/**
+	 * Creates a tennis game into the database. It returns the created
+	 * tennis game which has the acquired id.
+	 *
+	 * @param tennisGame    TennisGame
+	 * @return the created TennisGame which now contains an id
+	 */
 	public TennisGame create(TennisGame tennisGame) {
 		FailFast.notNull(tennisGame, "game");
 
@@ -93,6 +100,12 @@ public class TennisGameDao {
 		return tg;
 	}
 
+	/**
+	 * retrieves a tennis game by it's id
+	 *
+	 * @param id    the id of the game
+	 * @return TennisGame
+	 */
 	public TennisGame retrieve(int id) {
 		List<TennisGame> tennisGames = tennisGameSqlQuery.execute(id);
 		if (tennisGames.isEmpty()) return null;
