@@ -43,7 +43,7 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 	public void wonPositive() throws Exception {
 		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME);
 
-		getJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isOk());
+		putJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isOk());
 
 		assertEquals(Game.of(1, 0), tennisGameService.getById(game.getId()).getCurrentGame());
 	}
@@ -51,12 +51,12 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 	@Test
 	public void wonNegativeInvalidPlayer() throws Exception {
 		TennisGame game = tennisGameService.initiate(TestData.TENNIS_GAME);
-		getJson("/won/{gameId}/{playerName}", game.getId(), "invalid").andExpect(status().isBadRequest());
+		putJson("/won/{gameId}/{playerName}", game.getId(), "invalid").andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void wonNegativeInvalidGame() throws Exception {
-		getJson("/won/{gameId}/{playerName}", 6, "p1").andExpect(status().isNotFound());
+		putJson("/won/{gameId}/{playerName}", 6, "p1").andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class TennisControllerIntegrationTest extends IntegrationTestsBase {
 		for (int i = 0; i < 10; i++)
 			game = tennisGameService.win(game, game.getPlayer1());
 
-		getJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isBadRequest());
+		putJson("/won/{gameId}/{playerName}", game.getId(), game.getPlayer1().getName()).andExpect(status().isBadRequest());
 	}
 
 	@Test

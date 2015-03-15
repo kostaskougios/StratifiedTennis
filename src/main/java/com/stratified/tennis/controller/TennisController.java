@@ -37,7 +37,7 @@ public class TennisController {
 		return new TennisGameInitiateResponse(tennisGame.getId());
 	}
 
-	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/won/{gameId}/{playerName}", method = RequestMethod.PUT)
 	public void wonGame(@PathVariable int gameId, @PathVariable String playerName) {
 		TennisGame tennisGame = getGame(gameId);
 		if (!tennisGame.isPlayer(playerName))

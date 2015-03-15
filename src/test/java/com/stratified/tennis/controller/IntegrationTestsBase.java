@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.fail;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -102,4 +101,14 @@ public class IntegrationTestsBase {
 			return null;
 		}
 	}
+
+	protected ResultActions putJson(String uriTemplate, Object... urlVariables) {
+		try {
+			return mockMvc.perform(put(uriTemplate, urlVariables).accept(MediaType.APPLICATION_JSON));
+		} catch (Exception e) {
+			fail(e.getMessage());
+			return null;
+		}
+	}
+
 }
